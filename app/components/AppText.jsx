@@ -11,13 +11,3 @@ export default AppText = ({ children, style, ...otherProps }) => {
     </Text>
   );
 };
-
-// const styles = StyleSheet.create({
-//   text: {
-//     // fontFamily: "Inter-Regular",
-//     color: colors.black,
-//     fontSize: 30,
-//     fontWeight: "normal",
-//     lineHeight: 36,
-//   },
-// });

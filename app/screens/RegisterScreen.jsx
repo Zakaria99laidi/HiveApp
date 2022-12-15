@@ -8,9 +8,9 @@ import defaultStyles from "../config/defaultStyles";
 import CustomTextInput from "../components/CustomTextInput";
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
+import useScreenDimensions from "../hooks/useScreenDimensions";
 
-const screenWidth = Dimensions.get("screen").width;
-const screenHeight = Dimensions.get("screen").height;
+const [screenWidth, screenHeight] = useScreenDimensions();
 
 const RegisterScreen = () => {
   const { control, handleSubmit } = useForm();
@@ -68,10 +68,7 @@ const RegisterScreen = () => {
           rules={{ required: "Kërkohet fjalëkalimi" }}
           secureTextEntry
         />
-        {/* <AppText style={styles.forgotPasswordText}>
-        Ke harruar fjalkalimin? /{" "}
-        <AppText style={styles.link}>Ndryshoje</AppText>
-      </AppText> */}
+
         <AppButton
           title={"Krijo llogarinë"}
           onPress={handleSubmit(onSubmit)}

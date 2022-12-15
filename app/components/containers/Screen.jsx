@@ -19,7 +19,6 @@ const Screen = ({ children, style, ...otherProps }) => {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    // backgroundColor: "red",
   },
 });
 

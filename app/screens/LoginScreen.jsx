@@ -8,6 +8,9 @@ import CustomTextInput from "../components/CustomTextInput";
 import defaultStyles from "../config/defaultStyles";
 import Screen from "../components/containers/Screen";
 import colors from "../config/colors";
+import useScreenDimensions from "../hooks/useScreenDimensions";
+
+const [screenWidth, screenHeight] = useScreenDimensions();
 
 const LoginScreen = () => {
   const { control, handleSubmit } = useForm();
@@ -62,8 +65,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   img: {
-    width: "100%",
-    height: "30%",
+    width: screenWidth,
+    height: 0.3 * screenHeight,
   },
   registerText: {
     marginBottom: 30,
