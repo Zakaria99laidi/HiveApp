@@ -13,6 +13,7 @@ export default AppButton = ({
   style,
   styleText,
   imageSource,
+  iconComponent,
 }) => {
   return (
     <TouchableOpacity
@@ -24,9 +25,12 @@ export default AppButton = ({
         style,
       ]}
     >
-      <AppText style={[defaultStyles.title, styles.text, styleText]}>
-        {title}
-      </AppText>
+      {title && (
+        <AppText style={[defaultStyles.title, styles.text, styleText]}>
+          {title}
+        </AppText>
+      )}
+      {iconComponent}
       {imageSource && (
         <Image
           source={imageSource}

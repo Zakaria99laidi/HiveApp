@@ -15,4 +15,10 @@ export default {
     fontWeight: "normal",
     lineHeight: 32,
   },
+  darkTitle: {
+    color: colors.dark,
+    fontSize: 25,
+    fontWeight: "normal",
+    lineHeight: 32,
+  },
 };

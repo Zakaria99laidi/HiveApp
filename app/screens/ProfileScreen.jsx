@@ -102,8 +102,6 @@ const styles = StyleSheet.create({
   backgroundImg: {
     width: screenWidth,
     height: 0.4 * screenHeight,
-    position: "absolute",
-    top: 0,
   },
   header: {
     width: screenWidth,
