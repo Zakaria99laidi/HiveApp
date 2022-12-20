@@ -8,17 +8,19 @@ import defaultStyles from "../config/defaultStyles";
 export default AppButton = ({
   title,
   color = "primary",
-  width = "100%",
+  width,
   onPress,
   style,
   styleText,
   imageSource,
   iconComponent,
+  isDisabled = false,
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.8}
+      disabled={isDisabled}
       style={[
         styles.buttonContainer,
         { backgroundColor: colors[color], width: width },

@@ -1,14 +1,14 @@
 import React from "react";
 import { View, StyleSheet, Image, ImageBackground } from "react-native";
 
-import Screen from "../components/containers/Screen";
 import useScreenDimensions from "../hooks/useScreenDimensions";
 import PentagonButton from "../components/PentagonButton";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 import defaultStyles from "../config/defaultStyles";
+import ScreenWithBackground from "../components/containers/ScreenWithBackground";
 
-const [screenWidth, screenHeight] = useScreenDimensions();
+const [screenWidth, _] = useScreenDimensions();
 
 const icons = [
   {
@@ -35,92 +35,54 @@ const icons = [
 
 const ProfileScreen = () => {
   return (
-    <Screen>
-      <ImageBackground
-        source={require("../assets/images/background.png")}
-        imageStyle={styles.backgroundImg}
-        resizeMode="cover"
-      >
-        <View style={styles.header}>
-          <View style={styles.buttonHeaderContainer}>
-            <Image
-              source={require("../assets/images/goBack.png")}
-              style={styles.backImg}
-            />
-            <Image
-              source={require("../assets/images/pencilEdit.png")}
-              style={styles.editImg}
-            />
-          </View>
-
-          <View style={styles.userContainer}>
-            <Image
-              source={require("../assets/images/photo.png")}
-              style={styles.userImg}
-              resizeMode="contain"
-            />
-            <AppText style={[defaultStyles.title, styles.userName]}>
-              User name
-            </AppText>
-            <AppText>@username2022</AppText>
-          </View>
-        </View>
-
-        <View style={styles.iconsContainer}>
-          {icons.map((icon) => (
-            <View key={icon.label} style={styles.icon}>
-              <PentagonButton
-                ImgBackgroundSrc={icon.ImgBackground}
-                imgIconSrc={icon.ImgIcon}
-              />
-              <AppText style={styles.label}>{icon.label}</AppText>
-            </View>
-          ))}
-        </View>
-
-        <ImageBackground
-          source={require("../assets/images/advertisingSpace.png")}
-          style={styles.advertisingImg}
+    <ScreenWithBackground showEditImg={true}>
+      <View style={styles.userContainer}>
+        <Image
+          source={require("../assets/images/photo.png")}
+          style={styles.userImg}
           resizeMode="contain"
-        >
-          <AppText style={styles.advertisingText}>HAPËSIRË REKLAMIMI</AppText>
-          <Image
-            source={require("../assets/images/Bee.png")}
-            style={{
-              width: 50,
-              height: 50,
-            }}
-            resizeMode="contain"
-          />
-        </ImageBackground>
+        />
+        <AppText style={[defaultStyles.title, styles.userName]}>
+          User name
+        </AppText>
+        <AppText>@username2022</AppText>
+      </View>
+
+      <View style={styles.iconsContainer}>
+        {icons.map((icon) => (
+          <View key={icon.label} style={styles.icon}>
+            <PentagonButton
+              ImgBackgroundSrc={icon.ImgBackground}
+              imgIconSrc={icon.ImgIcon}
+            />
+            <AppText style={styles.label}>{icon.label}</AppText>
+          </View>
+        ))}
+      </View>
+
+      <ImageBackground
+        source={require("../assets/images/advertisingSpace.png")}
+        style={styles.advertisingImg}
+        resizeMode="contain"
+      >
+        <AppText style={styles.advertisingText}>HAPËSIRË REKLAMIMI</AppText>
+        <Image
+          source={require("../assets/images/Bee.png")}
+          style={{
+            width: 50,
+            height: 50,
+          }}
+          resizeMode="contain"
+        />
       </ImageBackground>
-    </Screen>
+    </ScreenWithBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImg: {
-    width: screenWidth,
-    height: 0.4 * screenHeight,
-  },
-  header: {
-    width: screenWidth,
-    height: 0.4 * screenHeight,
-    alignItems: "center",
-  },
-  buttonHeaderContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  backImg: { width: 48, height: 48 },
-  editImg: { width: 32, height: 32 },
   userContainer: {
     alignItems: "center",
-    marginTop: "8%",
+    marginVertical: "8%",
   },
   userImg: {
     width: 100,
@@ -144,7 +106,7 @@ const styles = StyleSheet.create({
   label: {
     textAlign: "center",
     marginTop: 7,
-    color: "#000",
+    color: colors.black,
     fontWeight: "500",
   },
   advertisingImg: {

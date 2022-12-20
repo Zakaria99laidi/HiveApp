@@ -1,17 +1,14 @@
 import React from "react";
-import { View, ImageBackground, StyleSheet, Image } from "react-native";
+import { View, ImageBackground, StyleSheet } from "react-native";
 import AppText from "../../components/AppText";
 
-import Screen from "../../components/containers/Screen";
 import StaticsCard from "../../components/StaticsCard";
-import useScreenDimensions from "../../hooks/useScreenDimensions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppButton from "../../components/AppButton";
 import defaultStyles from "../../config/defaultStyles";
 import colors from "../../config/colors";
 import HiveCard from "../../components/HiveCard";
-
-const [screenWidth, screenHeight] = useScreenDimensions();
+import ScreenWithBackground from "../../components/containers/ScreenWithBackground";
 
 const statics = [
   {
@@ -67,94 +64,58 @@ const smartHives = [
 
 const SmartHivesScreen = () => {
   return (
-    <Screen>
+    <ScreenWithBackground>
       <ImageBackground
-        source={require("../../assets/images/background.png")}
+        source={require("../../assets/images/background_2.png")}
         style={styles.backgroundImgContainer}
         imageStyle={styles.backgroundImg}
         resizeMode="cover"
       >
-        <View style={styles.buttonHeaderContainer}>
-          <Image
-            source={require("../../assets/images/goBack.png")}
-            style={styles.backImg}
+        <View style={styles.titleContainer}>
+          <AppButton
+            style={styles.plusButton}
+            iconComponent={<MaterialCommunityIcons name="plus" size={25} />}
           />
+          <AppText style={[defaultStyles.title, styles.title]}>Hives</AppText>
         </View>
-
-        <ImageBackground
-          source={require("../../assets/images/background_2.png")}
-          style={styles.backgroundImg_2_Container}
-          imageStyle={styles.backgroundImg_2}
-          resizeMode="cover"
-        >
-          <View style={styles.titleContainer}>
-            <AppButton
-              style={styles.plusButton}
-              iconComponent={<MaterialCommunityIcons name="plus" size={25} />}
-            />
-            <AppText style={[defaultStyles.title, styles.title]}>Hives</AppText>
-          </View>
-          <View style={styles.staticsContainer}>
-            {statics.map((item) => (
-              <StaticsCard
-                key={item.title}
-                width="22.5%"
-                title={item.title}
-                value={item.value}
-              />
-            ))}
-          </View>
-        </ImageBackground>
-
-        <View style={styles.hivesListContainer}>
-          {smartHives.map((smartHive) => (
-            <HiveCard
-              key={smartHive.title}
-              title={smartHive.title}
-              batteryLevel={smartHive.batteryLevel}
-              update={smartHive.update}
-              numFloors={smartHive.numFloors}
-              temperature_1={smartHive.temperature_1}
-              temperature_2={smartHive.temperature_2}
-              humidity={smartHive.humidity}
-              weight={smartHive.weight}
+        <View style={styles.staticsContainer}>
+          {statics.map((item) => (
+            <StaticsCard
+              key={item.title}
+              width="22.5%"
+              title={item.title}
+              value={item.value}
             />
           ))}
         </View>
       </ImageBackground>
-    </Screen>
+
+      <View style={styles.hivesListContainer}>
+        {smartHives.map((smartHive) => (
+          <HiveCard
+            key={smartHive.title}
+            title={smartHive.title}
+            batteryLevel={smartHive.batteryLevel}
+            update={smartHive.update}
+            numFloors={smartHive.numFloors}
+            temperature_1={smartHive.temperature_1}
+            temperature_2={smartHive.temperature_2}
+            humidity={smartHive.humidity}
+            weight={smartHive.weight}
+          />
+        ))}
+      </View>
+    </ScreenWithBackground>
   );
 };
 
 const styles = StyleSheet.create({
   backgroundImgContainer: {
-    width: screenWidth,
-    flex: 1,
-  },
-  backgroundImg: {
-    width: screenWidth,
-    height: 0.4 * screenHeight,
-    position: "absolute",
-    top: 0,
-  },
-  buttonHeaderContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  backImg: {
-    width: 48,
-    height: 48,
-  },
-  backgroundImg_2_Container: {
     height: 200,
     marginHorizontal: 5,
     borderRadius: 20,
   },
-  backgroundImg_2: {
+  backgroundImg: {
     borderRadius: 10,
   },
   titleContainer: {

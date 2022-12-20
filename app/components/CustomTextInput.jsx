@@ -1,6 +1,7 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+
+import { View, StyleSheet, TextInput } from "react-native";
 import colors from "../config/colors";
 import AppText from "./AppText";
 
@@ -10,7 +11,10 @@ const CustomTextInput = ({
   rules = {},
   secureTextEntry = false,
   placeholder,
+  label,
   style,
+  styleInput,
+  styleLabel,
   ...otherProps
 }) => {
   return (
@@ -23,9 +27,10 @@ const CustomTextInput = ({
         fieldState: { error },
       }) => (
         <>
-          <View style={[styles.container, error && styles.notValid, style]}>
+          <View style={[styles.container, style]}>
+            {label && <AppText style={styleLabel}>Name</AppText>}
             <TextInput
-              style={styles.input}
+              style={[styles.input, styleInput, error && styles.notValid]}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -33,8 +38,10 @@ const CustomTextInput = ({
               secureTextEntry={secureTextEntry}
               {...otherProps}
             />
+            {/* {error && (
+              <AppText style={styles.error}>{error.message || "Error"}</AppText>
+            )} */}
           </View>
-          {/* <AppText style={{ color: "red" }}>{error.message || "Error"}</AppText> */}
         </>
       )}
     />
@@ -43,19 +50,23 @@ const CustomTextInput = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.lightgrey,
+    marginVertical: 5,
+  },
+  input: {
+    backgroundColor: colors.whiteSmoke,
     width: "100%",
     borderRadius: 6,
 
     paddingHorizontal: 16,
     paddingVertical: 12,
-
-    marginVertical: 5,
   },
   notValid: {
     borderWidth: 1,
     borderColor: "red",
   },
-  input: {},
+  error: {
+    color: "red",
+    marginTop: 5,
+  },
 });
 export default CustomTextInput;
