@@ -10,6 +10,7 @@ import SmartHivesScreen from "./app/screens/SmartHivesScreen/SmartHivesScreen";
 import TestSreen from "./app/screens/TestSreen";
 
 export default function App() {
+  // return <RegisterScreen />;
   return (
     <NavigationContainer>
       <SmartHivesNavigator />

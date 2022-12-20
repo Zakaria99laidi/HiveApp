@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Screen from "../components/containers/Screen";
@@ -14,6 +14,9 @@ const [screenWidth, screenHeight] = useScreenDimensions();
 
 const RegisterScreen = () => {
   const { control, handleSubmit } = useForm();
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const onSubmit = (data) => console.log(data);
 
   return (
@@ -56,7 +59,10 @@ const RegisterScreen = () => {
           control={control}
           placeholder="Fjalëkalimi"
           rules={{ required: "Kërkohet fjalëkalimi" }}
-          secureTextEntry
+          // secureTextEntry
+          secureTextEntry={!showPassword}
+          setSecureTextEntry={() => setShowPassword(!showPassword)}
+          showPasswordImg={true}
         />
         <AppText style={styles.text}>
           Fjalëkalimi duhet të përmbajë të paktën 7 karaktere
@@ -66,7 +72,7 @@ const RegisterScreen = () => {
           control={control}
           placeholder="Përsërit fjalëkalimin"
           rules={{ required: "Kërkohet fjalëkalimi" }}
-          secureTextEntry
+          secureTextEntry={!showPassword}
         />
 
         <AppButton

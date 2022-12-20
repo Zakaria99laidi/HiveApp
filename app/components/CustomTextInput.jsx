@@ -1,7 +1,7 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, Image, Pressable } from "react-native";
 import colors from "../config/colors";
 import AppText from "./AppText";
 
@@ -10,6 +10,8 @@ const CustomTextInput = ({
   control,
   rules = {},
   secureTextEntry = false,
+  setSecureTextEntry,
+  showPasswordImg = false,
   placeholder,
   label,
   style,
@@ -29,15 +31,27 @@ const CustomTextInput = ({
         <>
           <View style={[styles.container, style]}>
             {label && <AppText style={styleLabel}>Name</AppText>}
-            <TextInput
-              style={[styles.input, styleInput, error && styles.notValid]}
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              placeholder={placeholder}
-              secureTextEntry={secureTextEntry}
-              {...otherProps}
-            />
+            <View style={[styles.input, styleInput, error && styles.notValid]}>
+              <TextInput
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                placeholder={placeholder}
+                secureTextEntry={secureTextEntry}
+                style={styles.zoneInput}
+                {...otherProps}
+              />
+              {showPasswordImg && (
+                <Pressable onPress={setSecureTextEntry}>
+                  <Image
+                    source={require("../assets/images/eyeClosed.png")}
+                    style={styles.showPasswordImg}
+                    resizeMode="contain"
+                  />
+                </Pressable>
+              )}
+            </View>
+
             {/* {error && (
               <AppText style={styles.error}>{error.message || "Error"}</AppText>
             )} */}
@@ -59,6 +73,16 @@ const styles = StyleSheet.create({
 
     paddingHorizontal: 16,
     paddingVertical: 12,
+
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  zoneInput: {
+    flex: 1,
+  },
+  showPasswordImg: {
+    width: 30,
+    height: 20,
   },
   notValid: {
     borderWidth: 1,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { View, Image, StyleSheet } from "react-native";
 
@@ -14,6 +14,8 @@ const [screenWidth, screenHeight] = useScreenDimensions();
 
 const LoginScreen = () => {
   const { control, handleSubmit } = useForm();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = (data) => console.log(data);
 
@@ -38,12 +40,15 @@ const LoginScreen = () => {
           placeholder="Emri i përdoruesit"
           style={styles.input}
         />
+
         <CustomTextInput
           control={control}
           name="password"
           rules={{ required: "Kërkohet fjalëkalimi" }}
           placeholder="Fjalëkalimi"
-          secureTextEntry
+          secureTextEntry={!showPassword}
+          setSecureTextEntry={() => setShowPassword(!showPassword)}
+          showPasswordImg={true}
         />
         <AppText style={styles.forgotPasswordText}>
           Ke harruar fjalkalimin? /{" "}
