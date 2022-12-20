@@ -9,6 +9,8 @@ import defaultStyles from "../../config/defaultStyles";
 import colors from "../../config/colors";
 import HiveCard from "../../components/HiveCard";
 import ScreenWithBackground from "../../components/containers/ScreenWithBackground";
+import { useNavigation } from "@react-navigation/native";
+import routes from "../../navigation/routes";
 
 const statics = [
   {
@@ -63,6 +65,7 @@ const smartHives = [
 ];
 
 const SmartHivesScreen = () => {
+  const { navigate } = useNavigation();
   return (
     <ScreenWithBackground>
       <ImageBackground
@@ -75,6 +78,7 @@ const SmartHivesScreen = () => {
           <AppButton
             style={styles.plusButton}
             iconComponent={<MaterialCommunityIcons name="plus" size={25} />}
+            onPress={() => navigate(routes.Add_SMART_HIVES)}
           />
           <AppText style={[defaultStyles.title, styles.title]}>Hives</AppText>
         </View>

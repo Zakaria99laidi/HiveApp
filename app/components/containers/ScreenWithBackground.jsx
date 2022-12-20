@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, ImageBackground, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Image,
+  Pressable,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import useScreenDimensions from "../../hooks/useScreenDimensions";
 import Screen from "./Screen";
@@ -11,6 +18,7 @@ const ScreenWithBackground = ({
   showBackImg = true,
   showEditImg = false,
 }) => {
+  const { goBack, canGoBack } = useNavigation();
   return (
     <Screen>
       <ImageBackground
@@ -21,10 +29,12 @@ const ScreenWithBackground = ({
       >
         <View style={styles.buttonHeaderContainer}>
           {showBackImg && (
-            <Image
-              source={require("../../assets/images/goBack.png")}
-              style={styles.backImg}
-            />
+            <Pressable onPress={() => canGoBack() && goBack()}>
+              <Image
+                source={require("../../assets/images/goBack.png")}
+                style={styles.backImg}
+              />
+            </Pressable>
           )}
           {showEditImg && (
             <Image
