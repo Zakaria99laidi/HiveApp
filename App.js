@@ -1,6 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import AuthNavigator from "./app/navigation/AuthNavigator";
+import navigationTheme from "./app/navigation/navigationTheme";
 import SmartHivesNavigator from "./app/navigation/SmartHivesNavigator";
 import AddSmartHivesScreen from "./app/screens/AddSmartHivesScreen";
 import LoginScreen from "./app/screens/LoginScreen";
@@ -10,10 +13,12 @@ import SmartHivesScreen from "./app/screens/SmartHivesScreen/SmartHivesScreen";
 import TestSreen from "./app/screens/TestSreen";
 
 export default function App() {
+  const [authToken, setAuthToken] = useState("token");
+
   // return <RegisterScreen />;
   return (
-    <NavigationContainer>
-      <SmartHivesNavigator />
+    <NavigationContainer theme={navigationTheme}>
+      {authToken ? <SmartHivesNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
   return (

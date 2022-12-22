@@ -9,10 +9,13 @@ import defaultStyles from "../config/defaultStyles";
 import Screen from "../components/containers/Screen";
 import colors from "../config/colors";
 import useScreenDimensions from "../hooks/useScreenDimensions";
+import { useNavigation } from "@react-navigation/native";
+import routes from "../navigation/routes";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
 const LoginScreen = () => {
+  const { navigate } = useNavigation();
   const { control, handleSubmit } = useForm();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +33,12 @@ const LoginScreen = () => {
         <AppText style={defaultStyles.title}>Mirëserdhe</AppText>
         <AppText style={styles.registerText}>
           Nëse je i/e re /{" "}
-          <AppText style={styles.link}>Krijo një llogari</AppText>
+          <AppText
+            style={styles.link}
+            onPress={() => navigate(routes.REGISTER)}
+          >
+            Krijo një llogari
+          </AppText>
         </AppText>
 
         <CustomTextInput
