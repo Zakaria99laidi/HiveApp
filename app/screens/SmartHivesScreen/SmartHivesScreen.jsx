@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, ImageBackground, StyleSheet } from "react-native";
 import AppText from "../../components/AppText";
 
@@ -11,6 +11,7 @@ import HiveCard from "../../components/HiveCard";
 import ScreenWithBackground from "../../components/containers/ScreenWithBackground";
 import { useNavigation } from "@react-navigation/native";
 import routes from "../../navigation/routes";
+import AuthContext from "../../auth/context";
 
 const statics = [
   {
@@ -66,6 +67,8 @@ const smartHives = [
 
 const SmartHivesScreen = () => {
   const { navigate } = useNavigation();
+
+  const { authToken, setAuthToken } = useContext(AuthContext);
   return (
     <ScreenWithBackground>
       <ImageBackground
@@ -93,7 +96,12 @@ const SmartHivesScreen = () => {
           ))}
         </View>
       </ImageBackground>
-
+      <AppButton title={authToken} style={{ marginVertical: 10 }} />
+      <AppButton
+        title={"logout"}
+        onPress={() => setAuthToken("")}
+        style={{ marginVertical: 10 }}
+      />
       <View style={styles.hivesListContainer}>
         {smartHives.map((smartHive) => (
           <HiveCard

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { View, Image, StyleSheet } from "react-native";
 
@@ -11,16 +11,22 @@ import colors from "../config/colors";
 import useScreenDimensions from "../hooks/useScreenDimensions";
 import { useNavigation } from "@react-navigation/native";
 import routes from "../navigation/routes";
+import AuthContext from "../auth/context";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
 const LoginScreen = () => {
   const { navigate } = useNavigation();
   const { control, handleSubmit } = useForm();
+  const authContext = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(authContext.authToken);
+    authContext.setAuthToken("gggg");
+    console.log(`new ${authContext.authToken}`);
+  };
 
   return (
     <Screen>
