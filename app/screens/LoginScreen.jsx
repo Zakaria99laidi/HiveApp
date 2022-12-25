@@ -12,6 +12,8 @@ import useScreenDimensions from "../hooks/useScreenDimensions";
 import { useNavigation } from "@react-navigation/native";
 import routes from "../navigation/routes";
 import AuthContext from "../auth/context";
+import authApi from "../api/auth";
+import authStorage from "../auth/storage";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
@@ -20,12 +22,18 @@ const LoginScreen = () => {
   const { control, handleSubmit } = useForm();
   const authContext = useContext(AuthContext);
 
+  const [loginFailed, setLoginFailed] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data) => {
-    console.log(authContext.authToken);
-    authContext.setAuthToken("gggg");
-    console.log(`new ${authContext.authToken}`);
+  const onSubmit = async (data) => {
+    const result = await authApi.login(data.username, data.password);
+    if (!result.ok) return setLoginFailed(true);
+
+    setLoginFailed(false);
+    // console.log(result.data);
+    authContext.setAuthToken(result.data.token);
+    authStorage.storeToken(result.data.token);
   };
 
   return (
@@ -46,6 +54,12 @@ const LoginScreen = () => {
             Krijo një llogari
           </AppText>
         </AppText>
+
+        {loginFailed && (
+          <AppText style={{ color: "red" }}>
+            Invalid username and/or password
+          </AppText>
+        )}
 
         <CustomTextInput
           control={control}

@@ -1,8 +1,11 @@
+import { useCallback, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+// import * as SplashScreen from "expo-splash-screen";
+
 import AuthContext from "./app/auth/context";
+import authStorage from "./app/auth/storage";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import navigationTheme from "./app/navigation/navigationTheme";
 import SmartHivesNavigator from "./app/navigation/SmartHivesNavigator";
@@ -13,8 +16,32 @@ import RegisterScreen from "./app/screens/RegisterScreen";
 import SmartHivesScreen from "./app/screens/SmartHivesScreen/SmartHivesScreen";
 import TestSreen from "./app/screens/TestSreen";
 
+// SplashScreen.preventAutoHideAsync();
+
 export default function App() {
   const [authToken, setAuthToken] = useState("");
+  // const [appIsReady, setAppIsReady] = useState(false);
+
+  const restoreToken = async () => {
+    const token = await authStorage.getToken();
+    if (!token) return;
+    setAuthToken(token);
+    // setAppIsReady(true);
+  };
+
+  useEffect(() => {
+    restoreToken();
+  }, []);
+
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (appIsReady) {
+  //     await SplashScreen.hideAsync();
+  //   }
+  // }, [appIsReady]);
+
+  // if (!appIsReady) {
+  //   return null;
+  // }
 
   // return <RegisterScreen />;
   return (

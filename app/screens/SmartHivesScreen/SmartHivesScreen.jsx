@@ -12,6 +12,7 @@ import ScreenWithBackground from "../../components/containers/ScreenWithBackgrou
 import { useNavigation } from "@react-navigation/native";
 import routes from "../../navigation/routes";
 import AuthContext from "../../auth/context";
+import authStorage from "../../auth/storage";
 
 const statics = [
   {
@@ -96,12 +97,30 @@ const SmartHivesScreen = () => {
           ))}
         </View>
       </ImageBackground>
-      <AppButton title={authToken} style={{ marginVertical: 10 }} />
+      {/* TODO: delete this ------------------------------------------------------------------------ */}
+      {/* <AppText
+        style={{
+          marginTop: 40,
+          marginHorizontal: 20,
+          backgroundColor: "#EEE",
+          color: "#0000FA",
+          fontSize: 18,
+          lineHeight: 30,
+          letterSpacing: 1,
+          padding: 10,
+        }}
+      >
+        {authToken}
+      </AppText>
       <AppButton
         title={"logout"}
-        onPress={() => setAuthToken("")}
-        style={{ marginVertical: 10 }}
-      />
+        onPress={() => {
+          setAuthToken(null);
+          authStorage.removeToken();
+        }}
+        style={{ marginTop: 10, marginHorizontal: 20 }}
+      /> */}
+      {/* ------------------------------------------------------------------------------------------ */}
       <View style={styles.hivesListContainer}>
         {smartHives.map((smartHive) => (
           <HiveCard
