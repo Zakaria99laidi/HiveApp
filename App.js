@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-// import * as SplashScreen from "expo-splash-screen";
+import * as SplashScreen from "expo-splash-screen";
 
 import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
@@ -16,38 +16,45 @@ import RegisterScreen from "./app/screens/RegisterScreen";
 import SmartHivesScreen from "./app/screens/SmartHivesScreen/SmartHivesScreen";
 import TestSreen from "./app/screens/TestSreen";
 
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [authToken, setAuthToken] = useState("");
-  // const [appIsReady, setAppIsReady] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
   const restoreToken = async () => {
     const token = await authStorage.getToken();
-    if (!token) return;
+    if (!token) {
+      setAppIsReady(true);
+      console.log("1 - hhhh");
+      return;
+    }
     setAuthToken(token);
-    // setAppIsReady(true);
+    setAppIsReady(true);
+    console.log("hhhh");
   };
 
   useEffect(() => {
     restoreToken();
   }, []);
 
-  // const onLayoutRootView = useCallback(async () => {
-  //   if (appIsReady) {
-  //     await SplashScreen.hideAsync();
-  //   }
-  // }, [appIsReady]);
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
 
-  // if (!appIsReady) {
-  //   return null;
-  // }
+  if (!appIsReady) {
+    return null;
+  }
 
   // return <RegisterScreen />;
   return (
     <AuthContext.Provider value={{ authToken, setAuthToken }}>
-      <NavigationContainer theme={navigationTheme}>
+      <NavigationContainer theme={navigationTheme} onReady={onLayoutRootView}>
+        {/* <View style={{ flex: 1 }} onLayout={onLayoutRootView}> */}
         {authToken ? <SmartHivesNavigator /> : <AuthNavigator />}
+        {/* </View> */}
       </NavigationContainer>
     </AuthContext.Provider>
   );
