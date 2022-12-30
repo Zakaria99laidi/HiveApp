@@ -21,4 +21,8 @@ export default {
     fontWeight: "normal",
     lineHeight: 32,
   },
+  error: {
+    color: colors.red,
+    textAlign: "center",
+  },
 };

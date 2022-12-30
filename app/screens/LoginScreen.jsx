@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { View, Image, StyleSheet } from "react-native";
 
@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import routes from "../navigation/routes";
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
+import useApi from "../hooks/useApi";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
@@ -21,12 +22,13 @@ const LoginScreen = () => {
   const { control, handleSubmit } = useForm();
 
   const { logIn } = useAuth();
+  const loginApi = useApi(authApi.login);
 
   const [loginFailed, setLoginFailed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = async (data) => {
-    const response = await authApi.login(data.username, data.password);
+  const onSubmit = async ({ email, password }) => {
+    const response = await loginApi.request(email, password);
     if (!response.ok) return setLoginFailed(true);
 
     setLoginFailed(false);
@@ -54,13 +56,13 @@ const LoginScreen = () => {
 
         {loginFailed && (
           <AppText style={{ color: "red" }}>
-            Invalid username and/or password
+            Invalid email and/or password
           </AppText>
         )}
 
         <CustomTextInput
           control={control}
-          name="username"
+          name="email"
           rules={{ required: "Kërkohet emri i përdoruesit" }}
           placeholder="Emri i përdoruesit"
           style={styles.input}
@@ -114,7 +116,8 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   SubmitButton: {
-    marginTop: 30,
+    marginTop: 25,
+    marginBottom: 12,
   },
 });
 

@@ -51,10 +51,9 @@ const CustomTextInput = ({
                 </Pressable>
               )}
             </View>
-
-            {/* {error && (
+            {error?.message && (
               <AppText style={styles.error}>{error.message || "Error"}</AppText>
-            )} */}
+            )}
           </View>
         </>
       )}

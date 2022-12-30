@@ -10,17 +10,35 @@ import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 import useScreenDimensions from "../hooks/useScreenDimensions";
 import useAuth from "../auth/useAuth";
+import useApi from "../hooks/useApi";
+import register from "../api/register";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
 const RegisterScreen = () => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, watch } = useForm();
 
-  // const { logIn } = useAuth();
+  const registerApi = useApi(register.register);
+  const { logIn } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [registerFailedError, setRegisterFailedError] = useState(null);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const userInfo = { ...data, mobileNr: "32424", city: "fier" };
+    const response = await registerApi.request(userInfo);
+
+    if (!response.ok) {
+      if (response.data) setRegisterFailedError(response.data.errors.email[0]);
+      else {
+        setRegisterFailedError("An unexpected error occurred.");
+      }
+      return;
+    }
+
+    setRegisterFailedError(null);
+    logIn(response.data.token);
+  };
 
   return (
     <Screen>
@@ -39,33 +57,44 @@ const RegisterScreen = () => {
       </View>
 
       <View style={{ paddingHorizontal: 30 }}>
+        {registerFailedError && (
+          <AppText style={defaultStyles.error}>{registerFailedError}</AppText>
+        )}
         <CustomTextInput
           name={"name"}
           control={control}
           placeholder="Emri"
           rules={{ required: "Kërkohet emri" }}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
         <CustomTextInput
-          name={"username"}
+          name={"surname"}
           control={control}
           placeholder="Emri i përdoruesit"
           rules={{ required: "Kërkohet emri i përdoruesit" }}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
         <CustomTextInput
           name={"email"}
           control={control}
           placeholder="E-mail"
           rules={{ required: "Kërkohet email" }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
         />
         <CustomTextInput
           name="password"
           control={control}
           placeholder="Fjalëkalimi"
-          rules={{ required: "Kërkohet fjalëkalimi" }}
-          // secureTextEntry
+          rules={{ required: "Kërkohet fjalëkalimi", minLength: 7 }}
           secureTextEntry={!showPassword}
           setSecureTextEntry={() => setShowPassword(!showPassword)}
           showPasswordImg={true}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
         <AppText style={styles.text}>
           Fjalëkalimi duhet të përmbajë të paktën 7 karaktere
@@ -74,8 +103,17 @@ const RegisterScreen = () => {
           name="repeatPassword"
           control={control}
           placeholder="Përsërit fjalëkalimin"
-          rules={{ required: "Kërkohet fjalëkalimi" }}
+          rules={{
+            required: "Kërkohet fjalëkalimi",
+            validate: (val) => {
+              if (watch("password") != val) {
+                return "Fjalëkalimet tuaja nuk përputhen";
+              }
+            },
+          }}
           secureTextEntry={!showPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
 
         <AppButton
@@ -125,8 +163,8 @@ const styles = StyleSheet.create({
     lineHeight: 14,
   },
   SubmitButton: {
-    marginTop: 50,
-    marginBottom: 25,
+    marginTop: 25,
+    marginBottom: 12,
   },
 });
 
