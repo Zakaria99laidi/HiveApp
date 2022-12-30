@@ -1,5 +1,10 @@
-import React, { useContext } from "react";
-import { View, ImageBackground, StyleSheet } from "react-native";
+import React, { useContext, useEffect } from "react";
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import AppText from "../../components/AppText";
 
 import StaticsCard from "../../components/StaticsCard";
@@ -13,6 +18,8 @@ import { useNavigation } from "@react-navigation/native";
 import routes from "../../navigation/routes";
 import AuthContext from "../../auth/context";
 import authStorage from "../../auth/storage";
+import smartHivesApi from "../../api/smartHives";
+import useApi from "../../hooks/useApi";
 
 const statics = [
   {
@@ -33,43 +40,20 @@ const statics = [
   },
 ];
 
-const smartHives = [
-  {
-    title: "Hive 1",
-    batteryLevel: 80,
-    update: "2022-10-26 12:19:24",
-    numFloors: 3,
-    temperature_1: 28.7,
-    temperature_2: 28.7,
-    humidity: 95.7,
-    weight: 43.5,
-  },
-  {
-    title: "Hive 2",
-    batteryLevel: 82,
-    update: "2022-10-26 12:19:24",
-    numFloors: 2,
-    temperature_1: 26.9,
-    temperature_2: 25.9,
-    humidity: 98.3,
-    weight: 47.1,
-  },
-  {
-    title: "Hive 3",
-    batteryLevel: 70,
-    update: "2022-10-26 12:19:24",
-    numFloors: 3,
-    temperature_1: 28.7,
-    temperature_2: 28.7,
-    humidity: 95.7,
-    weight: 43.5,
-  },
-];
-
 const SmartHivesScreen = () => {
   const { navigate } = useNavigation();
 
-  const { authToken, setAuthToken } = useContext(AuthContext);
+  const {
+    data: smartHives,
+    error,
+    loading,
+    request: loadSmartHives,
+  } = useApi(smartHivesApi.getSmartHives);
+
+  useEffect(() => {
+    loadSmartHives();
+  }, []);
+
   return (
     <ScreenWithBackground>
       <ImageBackground
@@ -97,44 +81,41 @@ const SmartHivesScreen = () => {
           ))}
         </View>
       </ImageBackground>
-      {/* TODO: delete this ------------------------------------------------------------------------ */}
-      {/* <AppText
-        style={{
-          marginTop: 40,
-          marginHorizontal: 20,
-          backgroundColor: "#EEE",
-          color: "#0000FA",
-          fontSize: 18,
-          lineHeight: 30,
-          letterSpacing: 1,
-          padding: 10,
-        }}
-      >
-        {authToken}
-      </AppText>
-      <AppButton
-        title={"logout"}
-        onPress={() => {
-          setAuthToken(null);
-          authStorage.removeToken();
-        }}
-        style={{ marginTop: 10, marginHorizontal: 20 }}
-      /> */}
-      {/* ------------------------------------------------------------------------------------------ */}
       <View style={styles.hivesListContainer}>
-        {smartHives.map((smartHive) => (
-          <HiveCard
-            key={smartHive.title}
-            title={smartHive.title}
-            batteryLevel={smartHive.batteryLevel}
-            update={smartHive.update}
-            numFloors={smartHive.numFloors}
-            temperature_1={smartHive.temperature_1}
-            temperature_2={smartHive.temperature_2}
-            humidity={smartHive.humidity}
-            weight={smartHive.weight}
+        {loading ? (
+          <ActivityIndicator
+            animating={loading}
+            color={colors.primary}
+            size="large"
           />
-        ))}
+        ) : error ? (
+          <>
+            <AppText style={defaultStyles.error}>
+              Couldn't retrieve the smart hives.
+            </AppText>
+            <AppButton
+              title={"try again"}
+              onPress={loadSmartHives}
+              style={{ marginTop: 10, marginHorizontal: 20 }}
+            />
+          </>
+        ) : smartHives.length ? (
+          smartHives.map((smartHive) => (
+            <HiveCard
+              key={smartHive.id}
+              title={smartHive.name}
+              batteryLevel={smartHive.battery}
+              update={smartHive.updated_at.slice(0, 19).replace("T", " ")}
+              numFloors={smartHive.floors}
+              temperature_1={smartHive.t1.toFixed(1)}
+              temperature_2={smartHive.t2.toFixed(1)}
+              humidity={smartHive.h.toFixed(1)}
+              weight={smartHive.kg.toFixed(1)}
+            />
+          ))
+        ) : (
+          <AppText style={defaultStyles.error}>No Data Found</AppText>
+        )}
       </View>
     </ScreenWithBackground>
   );
