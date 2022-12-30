@@ -14,6 +14,7 @@ import routes from "../navigation/routes";
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
 import useApi from "../hooks/useApi";
+import CustomActivityIndicator from "../components/CustomActivityIndicator";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
@@ -36,58 +37,64 @@ const LoginScreen = () => {
   };
 
   return (
-    <Screen>
-      <Image
-        source={require("../assets/images/background.png")}
-        style={styles.img}
-        resizeMode="cover"
+    <>
+      <CustomActivityIndicator
+        animating={loginApi.loading}
+        color={colors.primary}
       />
-      <View style={styles.container}>
-        <AppText style={defaultStyles.title}>Mirëserdhe</AppText>
-        <AppText style={styles.registerText}>
-          Nëse je i/e re /{" "}
-          <AppText
-            style={styles.link}
-            onPress={() => navigate(routes.REGISTER)}
-          >
-            Krijo një llogari
+      <Screen>
+        <Image
+          source={require("../assets/images/background.png")}
+          style={styles.img}
+          resizeMode="cover"
+        />
+        <View style={styles.container}>
+          <AppText style={defaultStyles.title}>Mirëserdhe</AppText>
+          <AppText style={styles.registerText}>
+            Nëse je i/e re /{" "}
+            <AppText
+              style={styles.link}
+              onPress={() => navigate(routes.REGISTER)}
+            >
+              Krijo një llogari
+            </AppText>
           </AppText>
-        </AppText>
 
-        {loginFailed && (
-          <AppText style={{ color: "red" }}>
-            Invalid email and/or password
+          {loginFailed && (
+            <AppText style={{ color: "red" }}>
+              Invalid email and/or password
+            </AppText>
+          )}
+
+          <CustomTextInput
+            control={control}
+            name="email"
+            rules={{ required: "Kërkohet emri i përdoruesit" }}
+            placeholder="Emri i përdoruesit"
+            style={styles.input}
+          />
+
+          <CustomTextInput
+            control={control}
+            name="password"
+            rules={{ required: "Kërkohet fjalëkalimi" }}
+            placeholder="Fjalëkalimi"
+            secureTextEntry={!showPassword}
+            setSecureTextEntry={() => setShowPassword(!showPassword)}
+            showPasswordImg={true}
+          />
+          <AppText style={styles.forgotPasswordText}>
+            Ke harruar fjalkalimin? /{" "}
+            <AppText style={styles.link}>Ndryshoje</AppText>
           </AppText>
-        )}
-
-        <CustomTextInput
-          control={control}
-          name="email"
-          rules={{ required: "Kërkohet emri i përdoruesit" }}
-          placeholder="Emri i përdoruesit"
-          style={styles.input}
-        />
-
-        <CustomTextInput
-          control={control}
-          name="password"
-          rules={{ required: "Kërkohet fjalëkalimi" }}
-          placeholder="Fjalëkalimi"
-          secureTextEntry={!showPassword}
-          setSecureTextEntry={() => setShowPassword(!showPassword)}
-          showPasswordImg={true}
-        />
-        <AppText style={styles.forgotPasswordText}>
-          Ke harruar fjalkalimin? /{" "}
-          <AppText style={styles.link}>Ndryshoje</AppText>
-        </AppText>
-        <AppButton
-          title={"Hyr"}
-          onPress={handleSubmit(onSubmit)}
-          style={styles.SubmitButton}
-        />
-      </View>
-    </Screen>
+          <AppButton
+            title={"Hyr"}
+            onPress={handleSubmit(onSubmit)}
+            style={styles.SubmitButton}
+          />
+        </View>
+      </Screen>
+    </>
   );
 };
 

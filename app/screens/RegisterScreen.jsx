@@ -12,6 +12,7 @@ import useScreenDimensions from "../hooks/useScreenDimensions";
 import useAuth from "../auth/useAuth";
 import useApi from "../hooks/useApi";
 import register from "../api/register";
+import CustomActivityIndicator from "../components/CustomActivityIndicator";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
@@ -41,93 +42,99 @@ const RegisterScreen = () => {
   };
 
   return (
-    <Screen>
-      <Image
-        source={require("../assets/images/background.png")}
-        style={styles.backgroundImg}
-        resizeMode="cover"
+    <>
+      <CustomActivityIndicator
+        animating={registerApi.loading}
+        color={colors.primary}
       />
-      <View style={styles.header}>
+      <Screen>
         <Image
-          source={require("../assets/images/logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
+          source={require("../assets/images/background.png")}
+          style={styles.backgroundImg}
+          resizeMode="cover"
         />
-        <AppText style={defaultStyles.title}>Krijo një llogari të re</AppText>
-      </View>
+        <View style={styles.header}>
+          <Image
+            source={require("../assets/images/logo.png")}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+          <AppText style={defaultStyles.title}>Krijo një llogari të re</AppText>
+        </View>
 
-      <View style={{ paddingHorizontal: 30 }}>
-        {registerFailedError && (
-          <AppText style={defaultStyles.error}>{registerFailedError}</AppText>
-        )}
-        <CustomTextInput
-          name={"name"}
-          control={control}
-          placeholder="Emri"
-          rules={{ required: "Kërkohet emri" }}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <CustomTextInput
-          name={"surname"}
-          control={control}
-          placeholder="Emri i përdoruesit"
-          rules={{ required: "Kërkohet emri i përdoruesit" }}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <CustomTextInput
-          name={"email"}
-          control={control}
-          placeholder="E-mail"
-          rules={{ required: "Kërkohet email" }}
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="email-address"
-        />
-        <CustomTextInput
-          name="password"
-          control={control}
-          placeholder="Fjalëkalimi"
-          rules={{ required: "Kërkohet fjalëkalimi", minLength: 7 }}
-          secureTextEntry={!showPassword}
-          setSecureTextEntry={() => setShowPassword(!showPassword)}
-          showPasswordImg={true}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        <AppText style={styles.text}>
-          Fjalëkalimi duhet të përmbajë të paktën 7 karaktere
-        </AppText>
-        <CustomTextInput
-          name="repeatPassword"
-          control={control}
-          placeholder="Përsërit fjalëkalimin"
-          rules={{
-            required: "Kërkohet fjalëkalimi",
-            validate: (val) => {
-              if (watch("password") != val) {
-                return "Fjalëkalimet tuaja nuk përputhen";
-              }
-            },
-          }}
-          secureTextEntry={!showPassword}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
+        <View style={{ paddingHorizontal: 30 }}>
+          {registerFailedError && (
+            <AppText style={defaultStyles.error}>{registerFailedError}</AppText>
+          )}
+          <CustomTextInput
+            name={"name"}
+            control={control}
+            placeholder="Emri"
+            rules={{ required: "Kërkohet emri" }}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <CustomTextInput
+            name={"surname"}
+            control={control}
+            placeholder="Emri i përdoruesit"
+            rules={{ required: "Kërkohet emri i përdoruesit" }}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <CustomTextInput
+            name={"email"}
+            control={control}
+            placeholder="E-mail"
+            rules={{ required: "Kërkohet email" }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="email-address"
+          />
+          <CustomTextInput
+            name="password"
+            control={control}
+            placeholder="Fjalëkalimi"
+            rules={{ required: "Kërkohet fjalëkalimi", minLength: 7 }}
+            secureTextEntry={!showPassword}
+            setSecureTextEntry={() => setShowPassword(!showPassword)}
+            showPasswordImg={true}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <AppText style={styles.text}>
+            Fjalëkalimi duhet të përmbajë të paktën 7 karaktere
+          </AppText>
+          <CustomTextInput
+            name="repeatPassword"
+            control={control}
+            placeholder="Përsërit fjalëkalimin"
+            rules={{
+              required: "Kërkohet fjalëkalimi",
+              validate: (val) => {
+                if (watch("password") != val) {
+                  return "Fjalëkalimet tuaja nuk përputhen";
+                }
+              },
+            }}
+            secureTextEntry={!showPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
 
-        <AppButton
-          title={"Krijo llogarinë"}
-          onPress={handleSubmit(onSubmit)}
-          style={styles.SubmitButton}
-        />
-        <AppText style={[styles.text, { textAlign: "center" }]}>
-          Duke u regjistruar në platformën tonë, ju bini dakord me të gjitha{" "}
-          <AppText style={styles.link}>Kushtet</AppText> dhe{" "}
-          <AppText style={styles.link}>Rregullat e privatësisë</AppText> sonë.
-        </AppText>
-      </View>
-    </Screen>
+          <AppButton
+            title={"Krijo llogarinë"}
+            onPress={handleSubmit(onSubmit)}
+            style={styles.SubmitButton}
+          />
+          <AppText style={[styles.text, { textAlign: "center" }]}>
+            Duke u regjistruar në platformën tonë, ju bini dakord me të gjitha{" "}
+            <AppText style={styles.link}>Kushtet</AppText> dhe{" "}
+            <AppText style={styles.link}>Rregullat e privatësisë</AppText> sonë.
+          </AppText>
+        </View>
+      </Screen>
+    </>
   );
 };
 
