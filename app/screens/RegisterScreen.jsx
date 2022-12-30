@@ -9,11 +9,14 @@ import CustomTextInput from "../components/CustomTextInput";
 import AppButton from "../components/AppButton";
 import colors from "../config/colors";
 import useScreenDimensions from "../hooks/useScreenDimensions";
+import useAuth from "../auth/useAuth";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
 const RegisterScreen = () => {
   const { control, handleSubmit } = useForm();
+
+  // const { logIn } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
 

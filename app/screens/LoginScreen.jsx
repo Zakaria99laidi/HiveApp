@@ -11,29 +11,26 @@ import colors from "../config/colors";
 import useScreenDimensions from "../hooks/useScreenDimensions";
 import { useNavigation } from "@react-navigation/native";
 import routes from "../navigation/routes";
-import AuthContext from "../auth/context";
 import authApi from "../api/auth";
-import authStorage from "../auth/storage";
+import useAuth from "../auth/useAuth";
 
 const [screenWidth, screenHeight] = useScreenDimensions();
 
 const LoginScreen = () => {
   const { navigate } = useNavigation();
   const { control, handleSubmit } = useForm();
-  const authContext = useContext(AuthContext);
+
+  const { logIn } = useAuth();
 
   const [loginFailed, setLoginFailed] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data) => {
-    const result = await authApi.login(data.username, data.password);
-    if (!result.ok) return setLoginFailed(true);
+    const response = await authApi.login(data.username, data.password);
+    if (!response.ok) return setLoginFailed(true);
 
     setLoginFailed(false);
-    // console.log(result.data);
-    authContext.setAuthToken(result.data.token);
-    authStorage.storeToken(result.data.token);
+    logIn(response.data.token);
   };
 
   return (

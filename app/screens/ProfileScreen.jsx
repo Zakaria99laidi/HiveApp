@@ -7,6 +7,7 @@ import AppText from "../components/AppText";
 import colors from "../config/colors";
 import defaultStyles from "../config/defaultStyles";
 import ScreenWithBackground from "../components/containers/ScreenWithBackground";
+import useAuth from "../auth/useAuth";
 
 const [screenWidth, _] = useScreenDimensions();
 
@@ -34,6 +35,7 @@ const icons = [
 ];
 
 const ProfileScreen = () => {
+  const { logOut } = useAuth();
   return (
     <ScreenWithBackground showEditImg={true}>
       <View style={styles.userContainer}>
@@ -75,6 +77,11 @@ const ProfileScreen = () => {
           resizeMode="contain"
         />
       </ImageBackground>
+      <AppButton
+        title={"logout"}
+        onPress={() => logOut()}
+        style={{ marginVertical: 10, marginHorizontal: 20 }}
+      />
     </ScreenWithBackground>
   );
 };

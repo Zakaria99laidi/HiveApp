@@ -6,6 +6,7 @@ import Screen from "../components/containers/Screen";
 import SmartHivesNavigator from "./SmartHivesNavigator";
 import ProfileScreen from "../screens/ProfileScreen";
 import MarketPlaceScreen from "../screens/MarketPlaceScreen";
+import routes from "./routes";
 
 function HomeScreen({ navigation }) {
   return (
@@ -33,8 +34,7 @@ const MenuDrawer = () => {
     <>
       <StatusBar style="auto" />
       <Drawer.Navigator
-        initialRouteName="smartHives"
-        // edgeWidth={400}
+        initialRouteName={routes.MARKET_PLACE}
         screenOptions={{
           drawerStyle: {
             backgroundColor: "white",
@@ -50,14 +50,17 @@ const MenuDrawer = () => {
           //   },
         }}
       >
-        <Drawer.Screen name="Market Place" component={MarketPlaceScreen} />
         <Drawer.Screen
-          name="Smart Hives"
+          name={routes.MARKET_PLACE}
+          component={MarketPlaceScreen}
+        />
+        <Drawer.Screen
+          name={routes.SMART_HIVES_NAV}
           component={SmartHivesNavigator}
           options={{ headerShown: false }}
         />
         <Drawer.Screen
-          name="Profile"
+          name={routes.PROFILE}
           component={ProfileScreen}
           options={{ headerShown: false }}
         />

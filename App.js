@@ -9,6 +9,7 @@ import authStorage from "./app/auth/storage";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import navigationTheme from "./app/navigation/navigationTheme";
 import SmartHivesNavigator from "./app/navigation/SmartHivesNavigator";
+import AppTab from "./app/navigation/AppTab";
 import AddSmartHivesScreen from "./app/screens/AddSmartHivesScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import ProfileScreen from "./app/screens/ProfileScreen";
@@ -26,12 +27,10 @@ export default function App() {
     const token = await authStorage.getToken();
     if (!token) {
       setAppIsReady(true);
-      console.log("1 - hhhh");
       return;
     }
     setAuthToken(token);
     setAppIsReady(true);
-    console.log("hhhh");
   };
 
   useEffect(() => {
@@ -52,9 +51,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ authToken, setAuthToken }}>
       <NavigationContainer theme={navigationTheme} onReady={onLayoutRootView}>
-        {/* <View style={{ flex: 1 }} onLayout={onLayoutRootView}> */}
-        {authToken ? <SmartHivesNavigator /> : <AuthNavigator />}
-        {/* </View> */}
+        {authToken ? <AppTab /> : <AuthNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
   );

@@ -22,7 +22,7 @@ const Tab = createBottomTabNavigator();
 export default function AppTab() {
   return (
     <Tab.Navigator
-      initialRouteName={routes.MARKET_PLACE}
+      initialRouteName={routes.MARKET_PLACE_DRAWER}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -67,7 +67,7 @@ export default function AppTab() {
         }}
       />
       <Tab.Screen
-        name={routes.MARKET_PLACE}
+        name={routes.MARKET_PLACE_DRAWER}
         component={MenuDrawer}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
